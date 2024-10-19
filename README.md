@@ -176,3 +176,13 @@ projects collaborating with kmyk/online-judge-tools:
 ## License
 
 MIT License
+
+## setuptoolsからの移行
+
+https://github.com/astral-sh/rye/issues/655
+
+setuptoolsはglobalにインストールする必要があった。逆にそれさえしておけばsetup.pyの内容を読み取ってくれる
+```
+cd ~/.rye/self
+./bin/pip install setuptools
+```

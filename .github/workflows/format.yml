@@ -1,6 +1,15 @@
 name: format
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'releases/*'
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
   format:

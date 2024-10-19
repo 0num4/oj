@@ -176,3 +176,62 @@ projects collaborating with kmyk/online-judge-tools:
 ## License
 
 MIT License
+
+## setuptoolsからの移行
+
+https://github.com/astral-sh/rye/issues/655
+
+setuptoolsはglobalにインストールする必要があった。逆にそれさえしておけばsetup.pyの内容を読み取ってくれる
+```
+cd ~/.rye/self
+./bin/pip install setuptools
+```
+
+## setup.pyからの移行
+自動で移行してくれるがscripts = { oj = "onlinejudge_command.main:main" }などは移行してくれない。
+
+## virtualenv is not managed by ryeについて
+
+.venvが腐ってると発生する。(uvを使って管理対象にしてなかったため消えなかった。)消してrye syncしなおしたらいけた
+
+```
+oj on  feat/rye [!] is 📦 v12.0.0 via 🐍 v3.12.4 on ☁️   
+❯ rye sync
+error: virtualenv is not managed by rye. Run `rye sync -f` to force.
+
+oj on  feat/rye [!] is 📦 v12.0.0 via 🐍 v3.12.4 on ☁️   
+❯ rye sync
+Initializing new virtualenv in /Users/user/work/private/tmp/oj/.venv
+Python version: cpython@3.12.4
+Generating production lockfile: /Users/user/work/private/tmp/oj/requirements.lock
+Generating dev lockfile: /Users/user/work/private/tmp/oj/requirements-dev.lock
+Installing dependencies
+Resolved 20 packages in 9ms
+   Built online-judge-tools @ file:///Users/user/work/private/tmp/oj
+Prepared 19 packages in 4.94s
+Installed 20 packages in 23ms
+ + appdirs==1.4.4
+ + attrs==24.2.0
+ + beautifulsoup4==4.12.3
+ + certifi==2024.8.30
+ + charset-normalizer==3.4.0
+ + colorama==0.4.6
+ + colorlog==6.8.2
+ + idna==3.10
+ + jsonschema==4.23.0
+ + jsonschema-specifications==2024.10.1
+ + lxml==5.3.0
+ + online-judge-api-client==10.10.1
+ + online-judge-tools==12.0.0 (from file:///Users/user/work/private/tmp/oj)
+ + packaging==24.1
+ + referencing==0.35.1
+ + requests==2.32.3
+ + rpds-py==0.20.0
+ + soupsieve==2.6
+ + toml==0.10.2
+ + urllib3==2.2.3
+Done!
+
+oj on  feat/rye [✘!?] is 📦 v12.0.0 via 🐍 v3.12.4 on ☁️   took 6s 
+❯ 
+```

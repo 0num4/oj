@@ -14,6 +14,7 @@ dependencies = [
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT License" }
+scripts = { oj = "onlinejudge_command.main:main" }
 
 [build-system]
 requires = ["hatchling"]

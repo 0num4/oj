@@ -16,8 +16,10 @@ from tests.utils import cat, sleep_1sec
 
 class TestTest(unittest.TestCase):
     def snippet_call_test(self, args, files, expected, verbose=True, replace_output_newline=True) -> Optional[Dict[str, Any]]:
+        print(f"args: {args}")
         with tempfile.TemporaryDirectory() as tempdir_:
             tempdir = pathlib.Path(tempdir_)
+            print(f"tempdir: {tempdir}")
             log_file_path = tempdir / 'test.json'
             result = tests.utils.run_in_sandbox(args=(['-v'] if verbose else []) + ['test', '--log-file=' + str(log_file_path)] + args, files=files)
             with log_file_path.open(mode='rb') as fh:
@@ -42,6 +44,87 @@ class TestTest(unittest.TestCase):
             return None
 
     def test_call_test_simple(self):
+        self.snippet_call_test(
+            args=['-c', cat()],
+            files=[
+                {
+                    'path': 'test/sample-1.in',
+                    'data': 'foo\n'
+                },
+                {
+                    'path': 'test/sample-1.out',
+                    'data': 'foo\n'
+                },
+                {
+                    'path': 'test/sample-2.in',
+                    'data': 'bar\n'
+                },
+                {
+                    'path': 'test/sample-2.out',
+                    'data': 'foo\n'
+                },
+                {
+                    'path': 'test/sample-3.in',
+                    'data': 'foo  bar \n'
+                },
+                {
+                    'path': 'test/sample-3.out',
+                    'data': 'foo bar\n'
+                },
+                {
+                    'path': 'test/sample-4.in',
+                    'data': 'foo \n bar \n'
+                },
+                {
+                    'path': 'test/sample-4.out',
+                    'data': 'foo bar\n'
+                },
+            ],
+            expected=[{
+                'status': 'AC',
+                'testcase': {
+                    'name': 'sample-1',
+                    'input': '%s/test/sample-1.in',
+                    'output': '%s/test/sample-1.out',
+                },
+                'output': 'foo\n',
+                'exitcode': 0,
+            }, {
+                'status': 'WA',
+                'testcase': {
+                    'name': 'sample-2',
+                    'input': '%s/test/sample-2.in',
+                    'output': '%s/test/sample-2.out',
+                },
+                'output': 'bar\n',
+                'exitcode': 0,
+            }, {
+                'status': 'WA',
+                'testcase': {
+                    'name': 'sample-3',
+                    'input': '%s/test/sample-3.in',
+                    'output': '%s/test/sample-3.out',
+                },
+                'output': 'foo  bar \n',
+                'exitcode': 0,
+            }, {
+                'status': 'WA',
+                'testcase': {
+                    'name': 'sample-4',
+                    'input': '%s/test/sample-4.in',
+                    'output': '%s/test/sample-4.out',
+                },
+                'output': 'foo \n bar \n',
+                'exitcode': 0,
+            }],
+        )
+    
+    def test_call_test_simple_with_constraints(self):
+        
+        """
+        制約付き(10^-6までしかみない)
+        """
+        print("test_call_test_simple_with_constraints")
         self.snippet_call_test(
             args=['-c', cat()],
             files=[

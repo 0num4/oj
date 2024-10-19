@@ -1,0 +1,30 @@
+[project]
+name = "online-judge-tools"
+version = "12.0.0"
+description = "CLI tool to solve problems of competitive programming"
+authors = [
+    { name = "Kimiyuki Onaka", email = "kimiyuki95@gmail.com" }
+]
+dependencies = [
+    "colorama>=0.3, <1",
+    "online-judge-api-client>=10.9.0, <11",
+    "packaging>=24",
+    "requests>=2, <3",
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT License" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/online_judge_tools"]
